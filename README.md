@@ -12,7 +12,7 @@
   </a>
 </p>
 
-> Yeoman generator to create a simple base structure for api rest based in express framework.
+> Yeoman generator to create a simple base structure for api rest based on express framework.
 
 ### 🏠 [Homepage](https://github.com/cristopher1/generator-express-simple-api-generator)
 
