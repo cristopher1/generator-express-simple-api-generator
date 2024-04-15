@@ -13,7 +13,7 @@ const getUserInfo = async (email, password) => {
   return userInfo
 }
 
-/** @type {import('koa').Middleware} */
+/** @type {import('express').RequestHandler} */
 const obtainToken = async (req, res) => {
   const { email, password } = req.body
   const userInfo = await getUserInfo(email, password)

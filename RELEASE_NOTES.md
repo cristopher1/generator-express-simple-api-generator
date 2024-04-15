@@ -2,6 +2,10 @@
 
 Yeoman generator to create a simple base structure for api rest based on express framework.
 
+**Features added in version 1.0.2:**
+
+- The jsdoc @type {import('koa')} are replaced by @type {import('express')}
+
 **Features added in version 1.0.1:**
 
 - Is used the express v4 syntax.

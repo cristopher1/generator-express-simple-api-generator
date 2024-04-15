@@ -4,7 +4,7 @@ import config from '../../config/jwt.js'
 
 const { JWTSecret, JWTAlgorithm } = config
 
-/** @type {import('koa').Middleware} */
+/** @type {import('express').RequestHandler} */
 const isAuthenticated = async (req, res, next) => {
   const { token } = req
   if (!token) {
