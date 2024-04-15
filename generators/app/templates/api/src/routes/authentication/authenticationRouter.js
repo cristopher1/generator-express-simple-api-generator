@@ -1,14 +1,14 @@
-import Router from 'koa-router'
+import Express from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../../config/jwt.js'
 
 const { JWTSecret, JWTAlgorithm } = config
 
 /** @type {import('koa').Middleware} */
-const isAuthenticated = async (ctx, next) => {
-  const { token } = ctx.request
+const isAuthenticated = async (req, res, next) => {
+  const { token } = req
   if (!token) {
-    ctx.status = 401
+    res.sendStatus(401)
     return
   }
 
@@ -17,14 +17,14 @@ const isAuthenticated = async (ctx, next) => {
   })
 
   if (userInfo) {
-    ctx.state.userInfo = userInfo
-    await next()
+    req.userInfo = userInfo
+    next()
   } else {
-    ctx.status = 401
+    res.sendStatus(401)
   }
 }
 
-const router = new Router()
+const router = Express.Router()
 
 router.use(isAuthenticated)
 

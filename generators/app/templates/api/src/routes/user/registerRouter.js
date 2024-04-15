@@ -1,6 +1,6 @@
-import Router from 'koa-router'
+import Express from 'express'
 
-const router = new Router()
+const router = Express.Router()
 
 // Example function. Remove or replace for a function that creates a user.
 const createUser = async (user) => {
@@ -10,12 +10,12 @@ const createUser = async (user) => {
   return true
 }
 
-router.post('/', async (ctx) => {
-  const { user } = ctx.state
+router.post('/', async (req, res) => {
+  const user = req.body
 
   await createUser(user)
 
-  ctx.status = 201
+  res.sendStatus(201)
 })
 
 export { router as registerRouter }

@@ -1,4 +1,4 @@
-import Router from 'koa-router'
+import Express from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../../config/jwt.js'
 
@@ -14,17 +14,17 @@ const getUserInfo = async (email, password) => {
 }
 
 /** @type {import('koa').Middleware} */
-const obtainToken = async (ctx) => {
-  const { email, password } = ctx.request.body
+const obtainToken = async (req, res) => {
+  const { email, password } = req.body
   const userInfo = await getUserInfo(email, password)
   const token = jwt.sign(userInfo, JWTSecret, { algorithm: JWTAlgorithm })
-  ctx.status = 200
-  ctx.body = {
+  res.status(200)
+  res.json({
     token,
-  }
+  })
 }
 
-const router = new Router()
+const router = Express.Router()
 
 router.post('/', obtainToken)
 

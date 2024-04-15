@@ -1,6 +1,6 @@
-import Router from 'koa-router'
+import Express from 'express'
 
-const router = new Router()
+const router = Express.Router()
 
 // Example function. Remove or replace for a function that obtains user information.
 const getUserInfoByEmail = async (email) => {
@@ -23,40 +23,40 @@ const updateUser = async (email, newUserData) => {
   return true
 }
 
-router.get('/:userEmail', async (ctx) => {
-  const { userEmail } = ctx.params
+router.get('/:userEmail', async (req, res) => {
+  const { userEmail } = req.params
 
   const user = await getUserInfoByEmail(userEmail)
 
   if (!user) {
-    ctx.status = 404
+    res.sendStatus(404)
     return
   }
 
   const { email, names, surnames } = user
 
-  ctx.status = 200
-  ctx.body = {
+  res.status(200)
+  res.json({
     email,
     names,
     surnames,
-  }
+  })
 })
 
-router.put('/', async (ctx) => {
-  const { email } = ctx.state.userInfo
-  const newUserData = ctx.request.body
+router.put('/', async (req, res) => {
+  const { email } = req.userInfo
+  const newUserData = req.body
 
   const user = await getUserInfoByEmail(email)
 
   if (!user) {
-    ctx.status = 404
+    res.sendStatus(404)
     return
   }
 
   await updateUser(email, newUserData)
 
-  ctx.status = 201
+  res.sendStatus(201)
 })
 
 export { router as userRouter }

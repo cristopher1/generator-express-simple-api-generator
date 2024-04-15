@@ -1,44 +1,40 @@
-import Koa from 'koa'
-import koaBody from 'koa-body'
-import override from 'koa-override-method'
-import bearerToken from 'koa-bearer-token'
-import logger from 'koa-logger'
+import Express from 'express'
+import bearerToken from 'express-bearer-token'
+import logger from 'morgan'
+import createHttpError from 'http-errors'
+import 'express-async-errors'
 import { apiRouter } from './routes/index.js'
 
+const environment = process.env.NODE_ENV
+
 // Api constructor
-const api = new Koa()
+const api = new Express()
 
-// error handler
-api.use(async (ctx, next) => {
-  try {
-    await next()
-  } catch (err) {
-    ctx.response.status = 500
-    console.error(err.message)
-  }
-})
-
-api.use(logger())
-
+api.use(logger('dev'))
+api.use(Express.json())
+api.use(Express.urlencoded({ extended: true }))
 api.use(bearerToken())
 
-// parse request body
-api.use(
-  koaBody({
-    multipart: true,
-    keepExtensions: true,
-  }),
-)
+// Routing middleware
+api.use('/api/v1', apiRouter)
 
-api.use((ctx, next) => {
-  ctx.request.method = override.call(
-    ctx,
-    ctx.request.body.fields || ctx.request.body,
-  )
-  return next()
+api.use(async (req, res, next) => {
+  next(createHttpError(404))
 })
 
-// Routing middleware
-api.use(apiRouter.routes())
+// Handler error
+api.use(async (err, req, res, next) => {
+  if (err && err.status) {
+    res.sendStatus(err.status)
+  }
+
+  if (err && !err.status) {
+    res.sendStatus(500)
+  }
+
+  if (environment === 'development') {
+    console.log(err)
+  }
+})
 
 export default api
