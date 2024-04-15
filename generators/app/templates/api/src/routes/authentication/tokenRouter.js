@@ -1,4 +1,4 @@
-import Express from 'express'
+import express from 'express'
 import jwt from 'jsonwebtoken'
 import config from '../../config/jwt.js'
 
@@ -24,7 +24,7 @@ const obtainToken = async (req, res) => {
   })
 }
 
-const router = Express.Router()
+const router = express.Router()
 
 router.post('/', obtainToken)
 
