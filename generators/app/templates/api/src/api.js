@@ -1,4 +1,4 @@
-import Express from 'express'
+import express from 'express'
 import bearerToken from 'express-bearer-token'
 import logger from 'morgan'
 import createHttpError from 'http-errors'
@@ -8,11 +8,11 @@ import { apiRouter } from './routes/index.js'
 const environment = process.env.NODE_ENV
 
 // Api constructor
-const api = new Express()
+const api = express()
 
 api.use(logger('dev'))
-api.use(Express.json())
-api.use(Express.urlencoded({ extended: true }))
+api.use(express.json())
+api.use(express.urlencoded({ extended: true }))
 api.use(bearerToken())
 
 // Routing middleware

@@ -1,6 +1,6 @@
-import Express from 'express'
+import express from 'express'
 
-const router = Express.Router()
+const router = express.Router()
 
 // Example function. Remove or replace for a function that obtains user information.
 const getUserInfoByEmail = async (email) => {
